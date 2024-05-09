@@ -1,0 +1,13 @@
+.main {
+  width: fit-content;
+}
+
+.btn-primary {
+  color: $light;
+  &:hover {
+    color: $light;
+  }
+  &:active {
+    color: $light !important;
+  }
+}
