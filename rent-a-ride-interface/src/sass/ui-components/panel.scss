@@ -1,0 +1,51 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: $light;
+  position: absolute;
+  z-index: 100;
+  top: 5%;
+  right: 5%;
+  border: 2px solid $light2;
+  border-radius: 12px;
+  z-index: 1000;
+  min-width: 10%;
+  .header {
+    display: inline-flex;
+    justify-content: center;
+    gap: 5px;
+    color: $middark;
+    font-weight: bold;
+    padding-bottom: 10px;
+    img {
+      height: 30px;
+    }
+    p {
+      margin: 0;
+    }
+  }
+  .panel-element {
+    border-top: 1px solid $light2;
+    color: $dark;
+    padding: 5px;
+    font-size: 70%;
+    color: $middark;
+    &:hover {
+      cursor: pointer;
+      background-color: $light2-transparent;
+    }
+    &:last-child {
+      color: $secondary;
+      &:hover {
+        cursor: pointer;
+        background-color: $secondary-transparent;
+      }
+    }
+    .badge {
+      vertical-align: center;
+      margin-left: 10px;
+      background-color: $secondary;
+    }
+  }
+}

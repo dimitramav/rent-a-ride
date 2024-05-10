@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import carMarker from "../assets/car-marker.svg";
@@ -48,8 +48,9 @@ const CarMap = () => {
     // Make sure you set the height and width of the map container otherwise the map won't show
     <MapContainer
       center={[athensCenter[0], athensCenter[1]]}
-      zoom={23}
+      zoom={14}
       ref={mapRef}
+      closePopupOnClick={false}
       style={{ height: "inherit", width: "inherit" }}
     >
       <TileLayer
@@ -61,15 +62,15 @@ const CarMap = () => {
         position={{ lat: athensCenter[0], lng: athensCenter[1] }}
         icon={carIcon}
       >
-        <Tooltip sticky>car 1 lalalal</Tooltip>
+        <Tooltip direction={"top"} permanent={true}>
+          Audi 07
+        </Tooltip>
       </Marker>
       {position && (
         <Marker
           position={{ lat: position.latitude, lng: position.longitude }}
           icon={personIcon}
-        >
-          <Tooltip sticky>my location</Tooltip>
-        </Marker>
+        ></Marker>
       )}
       {/* Additional map layers or components can be added here */}
     </MapContainer>
