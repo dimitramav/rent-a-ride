@@ -1,11 +1,14 @@
 @import "base/variables";
 @import "./node_modules/bootstrap/scss/bootstrap";
 @import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap";
+@import "react-date-range/dist/styles.css";
+@import "react-date-range/dist/theme/default.css";
 @import "base/reset";
 @import "base/typography";
 @import "base/buttons";
 @import "widgets/animations.scss";
 @import "widgets/scrollbar.scss";
+@import "widgets/calendar.scss";
 @import "ui-components/auth.scss";
 @import "ui-components/list.scss";
 @import "ui-components/panel.scss";

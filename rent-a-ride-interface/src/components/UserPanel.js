@@ -5,7 +5,6 @@ const UserPanel = () => {
       <div className="panel">
         <div className="header">
           <img src={avatar}></img>
-          <p>User</p>
         </div>
         <div className="panel-element">Account</div>
         <div className="panel-element">

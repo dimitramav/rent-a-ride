@@ -1,0 +1,19 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: $light;
+  position: absolute;
+  z-index: 100;
+  top: 17%;
+  left: 5%;
+  border: 2px solid $light2;
+  border-radius: 12px;
+  z-index: 1000;
+  width: 20%;
+  justify-content: center;
+  align-items: center;
+}
+.rdrDateDisplayWrapper {
+  display: none;
+}
