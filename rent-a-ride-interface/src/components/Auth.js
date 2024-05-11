@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
+import logo from "../full-logo.png";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Auth = (props) => {
   const [authMode, setAuthMode] = useState("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const changeAuthMode = () => {
     setAuthMode(authMode === "signin" ? "signup" : "signin");
@@ -27,13 +31,18 @@ const Auth = (props) => {
     })
       // Handle the response from backend here
       .then((res) => {
-        console.log(res.data);
-        setToken(res.data);
+        if (res.data) {
+          setToken(res.data);
+          navigate("/");
+        } else {
+          setError(true);
+        }
       })
 
       // Catch errors if any
       .catch((err) => {
         console.log(err);
+        setError(true);
       });
   };
 
@@ -42,9 +51,11 @@ const Auth = (props) => {
       <div className="Auth-form-container">
         <form className="Auth-form">
           <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
             <div className="text-center">
-              Not registered yet?{" "}
+              <img src={logo} width={120} height={120}></img>
+            </div>{" "}
+            <div className="text-center">
+              Not registered yet?
               <span className="link-primary" onClick={changeAuthMode}>
                 Sign Up
               </span>
@@ -55,7 +66,10 @@ const Auth = (props) => {
                 type="email"
                 className="form-control mt-1"
                 placeholder="Enter email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setError(false);
+                  setEmail(e.target.value);
+                }}
               />
             </div>
             <div className="form-group mt-3">
@@ -64,9 +78,21 @@ const Auth = (props) => {
                 type="password"
                 className="form-control mt-1"
                 placeholder="Enter password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setError(false);
+                  setPassword(e.target.value);
+                }}
               />
             </div>
+            {error && (
+              <div className="form-group mt-3">
+                <div className="alert alert-danger" role="alert">
+                  <label className="alert-label">
+                    Incorrect email or password
+                  </label>
+                </div>
+              </div>
+            )}
             <div className="d-grid gap-2 mt-3">
               <button
                 type="button"
@@ -86,7 +112,9 @@ const Auth = (props) => {
     <div className="Auth-form-container">
       <form className="Auth-form">
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign Up</h3>
+          <div className="text-center">
+            <img src={logo} width={120} height={120}></img>
+          </div>
           <div className="text-center">
             Already registered?{" "}
             <span className="link-primary" onClick={changeAuthMode}>
