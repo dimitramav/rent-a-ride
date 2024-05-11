@@ -31,6 +31,7 @@ const CarCalendar = () => {
       onChange={(item) => setState([item.selection])}
       moveRangeOnFirstSelection={false}
       ranges={state}
+      rangeColors={["#9bdbdd"]}
     />
   );
 };
