@@ -1,14 +1,14 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import { MapContainer, TileLayer, Marker, Tooltip, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import carMarker from "../assets/car-marker.svg";
 import personMarker from "../assets/person-marker.svg";
-
+import Context from "../Context";
 const CarMap = () => {
   const mapRef = useRef(null);
   const athensCenter = [37.9838, 23.7275];
-
+  const { cars } = useContext(Context);
   let carIcon = L.icon({
     iconSize: [40, 40],
     iconUrl: carMarker,
@@ -23,6 +23,7 @@ const CarMap = () => {
     className: "blinking",
   });
 
+  const [markerElements, setMarkerElements] = useState();
   const [position, setPosition] = useState({ latitude: null, longitude: null });
 
   useEffect(() => {
@@ -43,6 +44,26 @@ const CarMap = () => {
       console.log("Geolocation is not available in your browser.");
     }
   }, []);
+
+  useEffect(() => {
+    if (cars !== undefined) {
+      const markers = cars.map((car, index) => {
+        return (
+          <Marker
+            position={{ lat: car.latitude, lng: car.longitude }}
+            icon={carIcon}
+            key={index}
+          >
+            <Tooltip direction={"top"} permanent={true}>
+              {car.model}
+            </Tooltip>
+          </Marker>
+        );
+      });
+
+      setMarkerElements(markers);
+    }
+  }, [cars]);
   console.log(position);
   return (
     // Make sure you set the height and width of the map container otherwise the map won't show
@@ -57,15 +78,7 @@ const CarMap = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
       ></TileLayer>
-
-      <Marker
-        position={{ lat: athensCenter[0], lng: athensCenter[1] }}
-        icon={carIcon}
-      >
-        <Tooltip direction={"top"} permanent={true}>
-          Audi 07
-        </Tooltip>
-      </Marker>
+      {markerElements}
       {position && (
         <Marker
           position={{ lat: position.latitude, lng: position.longitude }}

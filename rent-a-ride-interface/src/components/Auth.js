@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import logo from "../full-logo.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { ip } from "../config";
 const Auth = (props) => {
   const [authMode, setAuthMode] = useState("signin");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
@@ -17,7 +16,7 @@ const Auth = (props) => {
   const signIn = () => {
     axios({
       // Endpoint to send files
-      url: "http://localhost:8080/auth/generateToken",
+      url: `${ip}/auth/generateToken`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,14 +24,15 @@ const Auth = (props) => {
       responseType: "text",
       // Attaching the form data
       data: {
-        username: email,
+        username: name,
         password: password,
       },
     })
       // Handle the response from backend here
       .then((res) => {
         if (res.data) {
-          setToken(res.data);
+          sessionStorage.setItem("token", JSON.stringify(res.data));
+
           navigate("/");
         } else {
           setError(true);
@@ -61,14 +61,13 @@ const Auth = (props) => {
               </span>
             </div>
             <div className="form-group mt-3">
-              <label>Email address</label>
+              <label>Username</label>
               <input
-                type="email"
                 className="form-control mt-1"
-                placeholder="Enter email"
+                placeholder="Enter name"
                 onChange={(e) => {
                   setError(false);
-                  setEmail(e.target.value);
+                  setName(e.target.value);
                 }}
               />
             </div>
@@ -88,7 +87,7 @@ const Auth = (props) => {
               <div className="form-group mt-3">
                 <div className="alert alert-danger" role="alert">
                   <label className="alert-label">
-                    Incorrect email or password
+                    Incorrect username or password
                   </label>
                 </div>
               </div>

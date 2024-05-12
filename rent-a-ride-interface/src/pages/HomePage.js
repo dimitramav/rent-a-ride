@@ -4,8 +4,6 @@ import UserPanel from "../components/UserPanel";
 import logo from "../full-logo.png";
 import CarCalendar from "../components/CarCalendar";
 const HomePage = () => {
-  const handleSelect = () => {};
-
   return (
     <div className="wrapper">
       <a href="/">

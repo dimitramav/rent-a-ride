@@ -1,6 +1,6 @@
 import { DateRange } from "react-date-range";
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useContext } from "react";
+import Context from "../Context";
 const CarCalendar = () => {
   const [state, setState] = useState([
     {
@@ -10,6 +10,8 @@ const CarCalendar = () => {
     },
   ]);
 
+  const { setStartDate, setEndDate } = useContext(Context);
+
   const convertToYYYYMMDD = (dateString) => {
     const previousDay = new Date(dateString);
     previousDay.setDate(previousDay.getDate() + 1);
@@ -18,8 +20,8 @@ const CarCalendar = () => {
   };
   useEffect(() => {
     if (state[0].startDate && state[0].endDate) {
-      console.log(convertToYYYYMMDD(state[0].startDate));
-      console.log(convertToYYYYMMDD(state[0].endDate));
+      setStartDate(convertToYYYYMMDD(state[0].startDate));
+      setEndDate(convertToYYYYMMDD(state[0].endDate));
     }
   });
   return (

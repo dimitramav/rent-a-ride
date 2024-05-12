@@ -1,33 +1,68 @@
-import { useState } from "react";
-
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
 import user from "../assets/user.svg";
-const car = {
-  id: 7,
-  model: "Audi Q7",
-  plateNo: "STU901",
-  pictureUrl:
-    "https://www.motortrend.com/uploads/sites/10/2020/11/2021-audi-a7-sportback-premium-plus-4wd-5door-hatchback-angular-front.png?fit=around%7C875:492",
-  leaser: {
-    id: 2,
-    userName: "test2",
-    password: "$2a$10$lW1Qj4Aw0ZOL2R6A1MCgDOye4UhdjNNgeGjCo0PDGevHsWQp9PNse",
-    firstName: "Otho",
-    lastName: "Plaunch",
-    mobilePhone: "720394982",
-    email: "oplaunch1@multiply.com",
-    age: 30,
-    comments: [],
-    userRoles: ["ROLE_LEASER"],
-  },
-  fromDate: "2024-05-20",
-  toDate: "2024-05-30",
-  available: true,
-};
-
+import Context from "../Context";
+import { ip } from "../config";
 const CarList = () => {
-  let cars = Array(10).fill(car);
   const [active, setActive] = useState("");
   const [cardContent, setCardContent] = useState(undefined);
+  const { startDate, endDate, cars, setCars } = useContext(Context);
+  useEffect(() => {
+    var token = JSON.parse(sessionStorage.token);
+    if (token) {
+      axios({
+        // Endpoint to send files
+        url: `${ip}/car/all`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        // Attaching the form data
+      })
+        // Handle the response from backend here
+        .then((res) => {
+          if (res.data) {
+            setCars(res.data);
+          }
+        })
+
+        // Catch errors if any
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      var token = JSON.parse(sessionStorage.token);
+      if (token) {
+        axios({
+          // Endpoint to send files
+          url: `${ip}/car/available/${startDate}/${endDate}`,
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          // Attaching the form data
+        })
+          // Handle the response from backend here
+          .then((res) => {
+            if (res.data) {
+              setCars(res.data);
+            }
+          })
+
+          // Catch errors if any
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  }, [startDate, endDate]);
+
   let carsList = cars.map((car, index) => {
     return (
       <>
@@ -48,7 +83,7 @@ const CarList = () => {
       </>
     );
   });
-  let cardElement = cardContent !== undefined && car !== undefined && (
+  let cardElement = cardContent !== undefined && (
     <div className="card-element">
       <img src={cardContent.pictureUrl}></img>
       <span>
@@ -57,7 +92,7 @@ const CarList = () => {
           <b>Owned by</b>
         </label>
         <a href="/">
-          {car.leaser.userName} {car.leaser.lastName}
+          {cardContent.leaser.userName} {cardContent.leaser.lastName}
         </a>
       </span>
       <div className="container ">
@@ -87,7 +122,7 @@ const CarList = () => {
         </div>
         {carsList}
       </div>
-      {cardContent !== undefined && car !== undefined && cardElement}
+      {cardContent !== undefined && cardElement}
     </>
   );
 };
